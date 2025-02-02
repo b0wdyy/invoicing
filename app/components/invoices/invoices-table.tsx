@@ -76,7 +76,9 @@ export function InvoicesTable({ invoices, searchQuery }: InvoicesTableProps) {
                             <TableHead>Date</TableHead>
                             <TableHead>Due Date</TableHead>
                             <TableHead>Status</TableHead>
-                            <TableHead className="text-right">Amount</TableHead>
+                            <TableHead className="text-right">
+                                Amount (excl. VAT)
+                            </TableHead>
                             <TableHead className="w-[200px] text-right"></TableHead>
                         </TableRow>
                     </TableHeader>

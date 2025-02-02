@@ -52,12 +52,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
             data: {
                 email,
                 password: hashedPassword,
+                name: email.split('@')[0],
             },
         })
 
         return Response.json({ success: true })
     } catch (error) {
-        console.error('Registration error:', error)
         return Response.json(
             { error: 'An error occurred during registration' },
             { status: 500 }

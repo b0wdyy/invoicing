@@ -35,7 +35,7 @@ export function InvoiceActions({ invoiceId, status }: InvoiceActionsProps) {
             )}
 
             <Button
-                variant="ghost"
+                variant="destructive"
                 size="icon"
                 onClick={() => setShowDeleteModal(true)}
             >

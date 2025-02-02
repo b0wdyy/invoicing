@@ -14,7 +14,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
     const user = await prisma.user.findUnique({
         where: {
-            id: session.get('userId'),
+            uuid: session.get('userId'),
         },
     })
 

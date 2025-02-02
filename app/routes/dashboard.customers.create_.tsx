@@ -1,4 +1,6 @@
 import { redirect, type ActionFunctionArgs } from '@remix-run/node'
+import { z } from 'zod'
+import { CreateCustomerForm } from '~/components/customers/create-customer-form'
 import {
     Card,
     CardContent,
@@ -6,8 +8,6 @@ import {
     CardHeader,
     CardTitle,
 } from '~/components/ui/card'
-import { CreateCustomerForm } from '~/components/customers/create-customer-form'
-import { z } from 'zod'
 import { prisma } from '~/lib/db.server'
 import { customerSchema } from '~/schemas/customer'
 
@@ -28,8 +28,7 @@ export async function action({ request }: ActionFunctionArgs) {
             return Response.json({ errors: error.errors }, { status: 400 })
         }
 
-        console.log(error)
-
+        console.error(error)
         return Response.json(
             { errors: [{ message: 'Failed to create customer' }] },
             { status: 500 }
@@ -39,7 +38,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export default function DashboardCustomersCreate() {
     return (
-        <Card className="max-w-2xl mx-auto">
+        <Card className="max-w-2xl mx-auto my-4">
             <CardHeader>
                 <CardTitle>Create New Customer</CardTitle>
                 <CardDescription>

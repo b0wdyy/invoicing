@@ -1,20 +1,19 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("POSTGRES_PRISMA_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
+  uuid     String    @id @default(uuid())
+  email    String    @unique
   password String
-  name     String @default("")
+  name     String
+  invoices Invoice[]
 }
 
 model Customer {
@@ -22,15 +21,18 @@ model Customer {
   name       String
   email      String
   vat_number String
-  address    String    @default("")
+  address    String
   invoices   Invoice[]
 
   @@index([name])
+  @@index([email])
 }
 
 model Invoice {
   id         Int           @id @default(autoincrement())
   number     String        @unique
+  userId     String
+  user       User          @relation(fields: [userId], references: [uuid])
   customerId Int
   customer   Customer      @relation(fields: [customerId], references: [id])
   amount     Int
@@ -39,6 +41,7 @@ model Invoice {
   due_date   DateTime
   items      InvoiceItem[]
 
+  @@index([userId])
   @@index([customerId])
   @@index([number])
 }
@@ -46,7 +49,7 @@ model Invoice {
 model InvoiceItem {
   id          Int     @id @default(autoincrement())
   invoiceId   Int
-  invoice     Invoice @relation(fields: [invoiceId], references: [id])
+  invoice     Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
   description String
   quantity    Int
   price       Int

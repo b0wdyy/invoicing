@@ -1,7 +1,6 @@
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '~/components/ui/button'
-import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import {
     Select,
@@ -13,6 +12,7 @@ import {
 import { InvoiceItems } from './invoice-items'
 import { invoiceSchema, type InvoiceFormData } from '~/schemas/invoice'
 import { useSubmit } from '@remix-run/react'
+import { DatePicker } from '~/components/ui/date-picker'
 
 type Customer = {
     id: number
@@ -22,12 +22,21 @@ type Customer = {
 
 interface CreateInvoiceFormProps {
     customers: Customer[]
+    defaultValues?: Partial<InvoiceFormData>
 }
 
-export function CreateInvoiceForm({ customers }: CreateInvoiceFormProps) {
+const statusOptions = [
+    { label: 'Draft', value: 'DRAFT' },
+    { label: 'Pending', value: 'PENDING' },
+    { label: 'Paid', value: 'PAID' },
+]
+
+export function CreateInvoiceForm({
+    customers,
+    defaultValues,
+}: CreateInvoiceFormProps) {
     const submit = useSubmit()
     const {
-        register,
         control,
         formState: { errors },
         handleSubmit,
@@ -36,6 +45,15 @@ export function CreateInvoiceForm({ customers }: CreateInvoiceFormProps) {
         defaultValues: {
             status: 'DRAFT',
             date: new Date().toISOString().split('T')[0],
+            ...defaultValues,
+            ...(defaultValues?.date && {
+                date: new Date(defaultValues.date).toISOString().split('T')[0],
+            }),
+            ...(defaultValues?.due_date && {
+                due_date: new Date(defaultValues.due_date)
+                    .toISOString()
+                    .split('T')[0],
+            }),
         },
     })
 
@@ -48,16 +66,6 @@ export function CreateInvoiceForm({ customers }: CreateInvoiceFormProps) {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <div className="space-y-2">
-                <Label htmlFor="number">Invoice Number</Label>
-                <Input id="number" {...register('number')} />
-                {errors.number && (
-                    <p className="text-sm text-red-500">
-                        {errors.number.message}
-                    </p>
-                )}
-            </div>
-
             <div className="space-y-2">
                 <Label htmlFor="customerId">Customer</Label>
                 <Controller
@@ -95,7 +103,23 @@ export function CreateInvoiceForm({ customers }: CreateInvoiceFormProps) {
 
             <div className="space-y-2">
                 <Label htmlFor="date">Invoice Date</Label>
-                <Input id="date" type="date" {...register('date')} />
+                <Controller
+                    name="date"
+                    control={control}
+                    render={({ field }) => (
+                        <DatePicker
+                            id="date"
+                            value={
+                                field.value ? new Date(field.value) : undefined
+                            }
+                            onChange={(date) => {
+                                field.onChange(
+                                    date?.toISOString().split('T')[0]
+                                )
+                            }}
+                        />
+                    )}
+                />
                 {errors.date && (
                     <p className="text-sm text-red-500">
                         {errors.date.message}
@@ -105,7 +129,23 @@ export function CreateInvoiceForm({ customers }: CreateInvoiceFormProps) {
 
             <div className="space-y-2">
                 <Label htmlFor="due_date">Due Date</Label>
-                <Input id="due_date" type="date" {...register('due_date')} />
+                <Controller
+                    name="due_date"
+                    control={control}
+                    render={({ field }) => (
+                        <DatePicker
+                            id="due_date"
+                            value={
+                                field.value ? new Date(field.value) : undefined
+                            }
+                            onChange={(date) => {
+                                field.onChange(
+                                    date?.toISOString().split('T')[0]
+                                )
+                            }}
+                        />
+                    )}
+                />
                 {errors.due_date && (
                     <p className="text-sm text-red-500">
                         {errors.due_date.message}
@@ -127,9 +167,14 @@ export function CreateInvoiceForm({ customers }: CreateInvoiceFormProps) {
                                 <SelectValue placeholder="Select a status..." />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="DRAFT">Draft</SelectItem>
-                                <SelectItem value="PENDING">Pending</SelectItem>
-                                <SelectItem value="PAID">Paid</SelectItem>
+                                {statusOptions.map((option) => (
+                                    <SelectItem
+                                        key={option.value}
+                                        value={option.value}
+                                    >
+                                        {option.label}
+                                    </SelectItem>
+                                ))}
                             </SelectContent>
                         </Select>
                     )}
@@ -144,7 +189,7 @@ export function CreateInvoiceForm({ customers }: CreateInvoiceFormProps) {
             <InvoiceItems control={control} errors={errors} />
 
             <Button type="submit" className="w-full">
-                Create Invoice
+                {defaultValues ? 'Update Invoice' : 'Create Invoice'}
             </Button>
         </form>
     )

@@ -50,7 +50,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         return Response.json({ error: 'Invalid password' }, { status: 401 })
     }
 
-    session.set('userId', user.id)
+    session.set('userId', user.uuid)
 
     return Response.json(
         { success: true },
