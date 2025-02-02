@@ -2,15 +2,15 @@ import { ActionFunctionArgs } from '@remix-run/node'
 import { Outlet, redirect } from '@remix-run/react'
 import { getSession } from '~/lib/session.server'
 
-export const loader = async ({ request }: ActionFunctionArgs) => {
-    const session = await getSession(request)
+// export const loader = async ({ request }: ActionFunctionArgs) => {
+//     const session = await getSession(request)
 
-    if (session.has('userId')) {
-        return redirect('/dashboard')
-    }
+//     if (session.has('userId')) {
+//         return redirect('/dashboard')
+//     }
 
-    return null
-}
+//     return null
+// }
 
 export default function Auth() {
     return (

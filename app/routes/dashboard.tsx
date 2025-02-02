@@ -5,28 +5,28 @@ import { SidebarProvider, SidebarTrigger } from '~/components/ui/sidebar'
 import { prisma } from '~/lib/db.server'
 import { getSession } from '~/lib/session.server'
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-    const session = await getSession(request)
+// export const loader = async ({ request }: LoaderFunctionArgs) => {
+//     const session = await getSession(request)
 
-    if (!session.has('userId')) {
-        return redirect('/login')
-    }
+//     if (!session.has('userId')) {
+//         return redirect('/login')
+//     }
 
-    const user = await prisma.user.findUnique({
-        where: {
-            uuid: session.get('userId'),
-        },
-    })
+//     const user = await prisma.user.findUnique({
+//         where: {
+//             uuid: session.get('userId'),
+//         },
+//     })
 
-    return Response.json({ user })
-}
+//     return Response.json({ user })
+// }
 
 export default function Dashboard() {
-    const { user } = useLoaderData<typeof loader>()
+    // const { user } = useLoaderData<typeof loader>()
 
     return (
         <SidebarProvider>
-            <AppSidebar user={user} />
+            {/* <AppSidebar user={user} /> */}
             <main className="w-full">
                 <SidebarTrigger />
                 <Outlet />
