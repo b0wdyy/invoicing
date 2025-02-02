@@ -1,14 +1,6 @@
 import { User } from '@prisma/client'
 import { Link } from '@remix-run/react'
 import {
-    FilePlus,
-    FileText,
-    Home,
-    Settings,
-    UserPlus,
-    Users,
-} from 'lucide-react'
-import {
     Sidebar,
     SidebarContent,
     SidebarFooter,
@@ -25,7 +17,6 @@ const items = [
     {
         title: 'Home',
         url: '/dashboard',
-        icon: Home,
     },
 ]
 
@@ -33,12 +24,10 @@ const invoiceItems = [
     {
         title: 'Invoices',
         url: '/dashboard/invoices',
-        icon: FileText,
     },
     {
         title: 'Create invoice',
         url: '/dashboard/invoices/create',
-        icon: FilePlus,
     },
 ]
 
@@ -46,12 +35,10 @@ const customerItems = [
     {
         title: 'Customers',
         url: '/dashboard/customers',
-        icon: Users,
     },
     {
         title: 'Create customer',
         url: '/dashboard/customers/create',
-        icon: UserPlus,
     },
 ]
 
@@ -69,7 +56,6 @@ export function AppSidebar({ user }: { user: User }) {
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild>
                                         <Link to={item.url}>
-                                            <item.icon />
                                             <span>{item.title}</span>
                                         </Link>
                                     </SidebarMenuButton>
@@ -87,7 +73,6 @@ export function AppSidebar({ user }: { user: User }) {
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild>
                                         <Link to={item.url}>
-                                            <item.icon />
                                             <span>{item.title}</span>
                                         </Link>
                                     </SidebarMenuButton>
@@ -105,7 +90,6 @@ export function AppSidebar({ user }: { user: User }) {
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild>
                                         <Link to={item.url}>
-                                            <item.icon />
                                             <span>{item.title}</span>
                                         </Link>
                                     </SidebarMenuButton>
@@ -122,7 +106,6 @@ export function AppSidebar({ user }: { user: User }) {
                             <SidebarMenuItem>
                                 <SidebarMenuButton asChild>
                                     <Link to="/dashboard/settings">
-                                        <Settings />
                                         <span>Settings</span>
                                     </Link>
                                 </SidebarMenuButton>
