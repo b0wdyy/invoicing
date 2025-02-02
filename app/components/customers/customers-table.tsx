@@ -1,8 +1,4 @@
-import { Link, useNavigate, useSearchParams } from '@remix-run/react'
-import { useEffect, useState } from 'react'
-import { useDebounce } from '../../hooks/use-debounce'
-import { Button } from '../ui/button'
-import { Input } from '../ui/input'
+import { useNavigate, useSearchParams, Link } from '@remix-run/react'
 import {
     Table,
     TableBody,
@@ -10,7 +6,12 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from '../ui/table'
+} from '~/components/ui/table'
+import { Input } from '~/components/ui/input'
+import { Button } from '~/components/ui/button'
+import { PlusIcon } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { useDebounce } from '~/hooks/use-debounce'
 
 type Customer = {
     id: number
@@ -54,7 +55,10 @@ export function CustomersTable({
                     onChange={(e) => setSearch(e.target.value)}
                 />
                 <Button asChild>
-                    <Link to="create">New Customer</Link>
+                    <Link to="create">
+                        <PlusIcon className="mr-2 h-4 w-4" />
+                        New Customer
+                    </Link>
                 </Button>
             </div>
 

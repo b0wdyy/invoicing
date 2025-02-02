@@ -1,9 +1,4 @@
-import { Link, useNavigate, useSearchParams } from '@remix-run/react'
-import { useEffect, useState } from 'react'
-import { useDebounce } from '~/hooks/use-debounce'
-import { formatDate } from '~/lib/utils'
-import { Button } from '../ui/button'
-import { Input } from '../ui/input'
+import { useNavigate, useSearchParams, Link } from '@remix-run/react'
 import {
     Table,
     TableBody,
@@ -11,10 +6,16 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from '../ui/table'
-import { InvoiceActions } from './invoice-actions'
-import { InvoiceAmount } from './invoice-amount'
+} from '~/components/ui/table'
+import { Input } from '~/components/ui/input'
+import { Button } from '~/components/ui/button'
+import { PlusIcon } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { useDebounce } from '~/hooks/use-debounce'
 import { InvoiceStatus } from './invoice-status'
+import { InvoiceAmount } from './invoice-amount'
+import { formatDate } from '~/lib/utils'
+import { InvoiceActions } from './invoice-actions'
 
 interface Invoice {
     id: string
@@ -59,7 +60,10 @@ export function InvoicesTable({ invoices, searchQuery }: InvoicesTableProps) {
                     onChange={(e) => setSearch(e.target.value)}
                 />
                 <Button asChild>
-                    <Link to="create">New Invoice</Link>
+                    <Link to="create">
+                        <PlusIcon className="mr-2 h-4 w-4" />
+                        New Invoice
+                    </Link>
                 </Button>
             </div>
 
