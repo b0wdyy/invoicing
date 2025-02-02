@@ -1,4 +1,4 @@
-import { ActionFunctionArgs } from '@remix-run/node'
+import { ActionFunctionArgs, redirect } from '@remix-run/node'
 import { Form, Link, useLoaderData } from '@remix-run/react'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
@@ -25,37 +25,42 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const password = formData.get('password')?.toString()
 
     if (!email || !password) {
-        return Response.json({ error: 'Invalid form data' }, { status: 400 })
+        session.flash('error', 'Email and password are required')
+        return redirect('/login', {
+            headers: { 'Set-Cookie': await commitSession(session) },
+        })
     }
 
     const user = await prisma.user.findUnique({
         where: { email },
+        select: {
+            // Only select what we need
+            uuid: true,
+            password: true,
+        },
     })
 
     if (!user) {
-        session.flash('error', 'User not found')
-
-        return Response.json(
-            { error: 'User not found' },
-            {
-                headers: { 'Set-Cookie': await commitSession(session) },
-                status: 404,
-            }
-        )
+        session.flash('error', 'Invalid credentials')
+        return redirect('/login', {
+            headers: { 'Set-Cookie': await commitSession(session) },
+        })
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password)
 
     if (!isPasswordValid) {
-        return Response.json({ error: 'Invalid password' }, { status: 401 })
+        session.flash('error', 'Invalid credentials')
+        return redirect('/login', {
+            headers: { 'Set-Cookie': await commitSession(session) },
+        })
     }
 
     session.set('userId', user.uuid)
 
-    return Response.json(
-        { success: true },
-        { headers: { 'Set-Cookie': await commitSession(session) } }
-    )
+    return redirect('/dashboard', {
+        headers: { 'Set-Cookie': await commitSession(session) },
+    })
 }
 
 export default function Login() {
