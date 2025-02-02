@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { Link, useFetcher } from '@remix-run/react'
-import { Button } from '~/components/ui/button'
-import { ConfirmModal } from '~/components/ui/confirm-modal'
-import { Pencil, Trash2, CheckCircle } from 'lucide-react'
+import { Button } from '../ui/button'
+import { ConfirmModal } from '../ui/confirm-modal'
 
 interface InvoiceActionsProps {
     invoiceId: string
@@ -17,8 +16,7 @@ export function InvoiceActions({ invoiceId, status }: InvoiceActionsProps) {
         <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon" asChild>
                 <Link to={`/dashboard/invoices/${invoiceId}/edit`}>
-                    <Pencil className="h-4 w-4" />
-                    <span className="sr-only">Edit</span>
+                    <span className="">Edit</span>
                 </Link>
             </Button>
 
@@ -28,8 +26,7 @@ export function InvoiceActions({ invoiceId, status }: InvoiceActionsProps) {
                     action={`/dashboard/invoices/${invoiceId}/mark-paid`}
                 >
                     <Button variant="ghost" size="icon" type="submit">
-                        <CheckCircle className="h-4 w-4" />
-                        <span className="sr-only">Mark as paid</span>
+                        <span className="">Mark as paid</span>
                     </Button>
                 </fetcher.Form>
             )}
@@ -39,8 +36,7 @@ export function InvoiceActions({ invoiceId, status }: InvoiceActionsProps) {
                 size="icon"
                 onClick={() => setShowDeleteModal(true)}
             >
-                <Trash2 className="h-4 w-4" />
-                <span className="sr-only">Delete</span>
+                <span className="">Delete</span>
             </Button>
 
             <ConfirmModal

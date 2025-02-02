@@ -1,8 +1,7 @@
 import { FieldErrors, useFieldArray, type Control } from 'react-hook-form'
-import { Button } from '~/components/ui/button'
-import { Input } from '~/components/ui/input'
-import { Label } from '~/components/ui/label'
-import { PlusIcon, TrashIcon } from 'lucide-react'
+import { Button } from '../ui/button'
+import { Input } from '../ui/input'
+import { Label } from '../ui/label'
 import type { InvoiceFormData } from '~/schemas/invoice'
 
 interface InvoiceItemsProps {
@@ -28,7 +27,6 @@ export function InvoiceItems({ control, errors }: InvoiceItemsProps) {
                         append({ description: '', quantity: 1, price: 0 })
                     }
                 >
-                    <PlusIcon className="h-4 w-4 mr-2" />
                     Add Item
                 </Button>
             </div>
@@ -43,7 +41,7 @@ export function InvoiceItems({ control, errors }: InvoiceItemsProps) {
                             size="sm"
                             onClick={() => remove(index)}
                         >
-                            <TrashIcon className="h-4 w-4" />
+                            <span className="">Delete</span>
                         </Button>
                     </div>
 

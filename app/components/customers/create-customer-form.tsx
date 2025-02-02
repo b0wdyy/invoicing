@@ -1,10 +1,10 @@
 import { Form } from '@remix-run/react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button } from '~/components/ui/button'
-import { Input } from '~/components/ui/input'
-import { Label } from '~/components/ui/label'
-import { customerSchema, type CustomerFormData } from '~/schemas/customer'
+import { Button } from '../ui/button'
+import { Input } from '../ui/input'
+import { Label } from '../ui/label'
+import { customerSchema, type CustomerFormData } from '../../schemas/customer'
 
 export function CreateCustomerForm() {
     const {

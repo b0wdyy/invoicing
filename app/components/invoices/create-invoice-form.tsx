@@ -1,7 +1,6 @@
-import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button } from '~/components/ui/button'
-import { Label } from '~/components/ui/label'
+import { useSubmit } from '@remix-run/react'
+import { Controller, useForm } from 'react-hook-form'
 import {
     Select,
     SelectContent,
@@ -9,10 +8,11 @@ import {
     SelectTrigger,
     SelectValue,
 } from '~/components/ui/select'
+import { invoiceSchema, type InvoiceFormData } from '../../schemas/invoice'
+import { Button } from '../ui/button'
+import { DatePicker } from '../ui/date-picker'
+import { Label } from '../ui/label'
 import { InvoiceItems } from './invoice-items'
-import { invoiceSchema, type InvoiceFormData } from '~/schemas/invoice'
-import { useSubmit } from '@remix-run/react'
-import { DatePicker } from '~/components/ui/date-picker'
 
 type Customer = {
     id: number
