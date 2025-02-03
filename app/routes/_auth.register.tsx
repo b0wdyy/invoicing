@@ -3,7 +3,7 @@ import { Form, Link } from '@remix-run/react'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { prisma } from '~/lib/db.server'
-import bcrypt from 'bcryptjs'
+import * as bcrypt from 'bcrypt'
 
 export const action = async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData()
@@ -11,8 +11,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const password = formData.get('password')?.toString()
     const confirmPassword = formData.get('confirmPassword')?.toString()
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
     if (!email || !emailRegex.test(email)) {
         return Response.json({ error: 'Invalid email format' }, { status: 400 })
     }
@@ -43,9 +43,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     }
 
     try {
+        console.log(process.env.SALT_ROUNDS)
         const hashedPassword = await bcrypt.hash(
             password,
-            parseInt(process.env.BCRYPT_ROUNDS || '10')
+            parseInt(process.env.SALT_ROUNDS || '10')
         )
 
         await prisma.user.create({

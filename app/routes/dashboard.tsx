@@ -3,15 +3,14 @@ import {
     redirect,
     type MetaFunction,
 } from '@remix-run/node'
-import { Outlet, useLoaderData } from '@remix-run/react'
+import { Outlet } from '@remix-run/react'
 import { AppSidebar } from '~/components/app-side-bar'
 import { SidebarProvider, SidebarTrigger } from '~/components/ui/sidebar'
 import { prisma } from '~/lib/db.server'
-import { getSession } from '~/lib/session.server'
+import { getUserUuidFromSession } from '~/lib/users/user-helper.server'
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-    const session = await getSession(request)
-    const userId = session.get('userId')
+    const userId = await getUserUuidFromSession(request)
 
     if (!userId) {
         return redirect('/login')
@@ -42,11 +41,9 @@ export const meta: MetaFunction = () => {
 }
 
 export default function Dashboard() {
-    const { user } = useLoaderData<typeof loader>()
-
     return (
         <SidebarProvider>
-            <AppSidebar user={user} />
+            <AppSidebar />
             <main className="w-full">
                 <SidebarTrigger />
                 <Outlet />

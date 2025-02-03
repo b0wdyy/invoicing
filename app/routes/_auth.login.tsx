@@ -3,7 +3,7 @@ import { Form, Link, useLoaderData } from '@remix-run/react'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { prisma } from '~/lib/db.server'
-import bcrypt from 'bcryptjs'
+import * as bcrypt from 'bcrypt'
 import { commitSession, getSession } from '~/lib/session.server'
 
 export const loader = async ({ request }: ActionFunctionArgs) => {
