@@ -1,18 +1,10 @@
 import { Form } from '@remix-run/react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
-
-const customerSchema = z.object({
-    name: z.string().min(2, 'Name must be at least 2 characters'),
-    email: z.string().email('Please enter a valid email'),
-    vat_number: z.string().min(1, 'VAT number is required'),
-})
-
-export type CustomerFormData = z.infer<typeof customerSchema>
+import { customerSchema, type CustomerFormData } from '~/schemas/customer'
 
 export function CreateCustomerForm() {
     const {
@@ -40,6 +32,16 @@ export function CreateCustomerForm() {
                 {errors.email && (
                     <p className="text-sm text-red-500">
                         {errors.email.message}
+                    </p>
+                )}
+            </div>
+
+            <div className="space-y-2">
+                <Label htmlFor="address">Address</Label>
+                <Input id="address" {...register('address')} />
+                {errors.address && (
+                    <p className="text-sm text-red-500">
+                        {errors.address.message}
                     </p>
                 )}
             </div>
